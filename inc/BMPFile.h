@@ -8,18 +8,17 @@
 class BMPFile{
 
     #pragma pack(1)
-    struct BitmapFileHeader{
+    struct BitmapFileHeader{    //size =
         uint16_t signature;
         uint32_t file_size;
-        uint16_t reserved1;
-        uint16_t reserved2;
+        uint16_t reserved1=0;
+        uint16_t reserved2=0;
         uint32_t offset;
     };
 
     #pragma pack(1)
-
-    struct DIBHeader{
-        uint32_t DIBHeader_size;
+    struct DIBHeader{   
+        uint32_t DIBHeader_size; //40
         uint32_t image_width;
         uint32_t image_height;
         uint16_t planes = 1;
@@ -34,7 +33,9 @@ class BMPFile{
 
     #pragma pack(1)
     struct Pixel{
-        uint8_t b,g,r;
+        uint8_t b=0;
+        uint8_t g=0;
+        uint8_t r=0;
     };
 
     BitmapFileHeader* file_header;
@@ -47,9 +48,14 @@ public:
     static BMPFile* open(char*);
     static BMPFile* newImage(int, int);
 
+    int getWidth() { return info_header->image_width;  }
+    int getHeight(){ return info_header->image_height; }
+
     void writeToFile(char* file_name);
     
     Pixel& pixel(int,int);
+
+    
 };
 
 #endif

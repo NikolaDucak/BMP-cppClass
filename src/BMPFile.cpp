@@ -6,11 +6,9 @@ BMPFile* BMPFile::open(char* file_name){
     std::ifstream in;
     in.open(file_name, std::fstream::binary );
 
-    if(!in.is_open()){
-        std::cout<<"no open";
-        exit(0);
-    }
-  
+    if(!in.is_open())
+        return nullptr;
+    
     BitmapFileHeader* header = new BitmapFileHeader;
     DIBHeader*        dib    = new DIBHeader;
     in.read( (char*) header, sizeof( BitmapFileHeader) );
@@ -34,6 +32,7 @@ BMPFile* BMPFile::open(char* file_name){
         in.read((char*) &(buffer[i]), sizeof(Pixel));
         if( ((i+1) % img->info_header->image_width) == 0 ) in.ignore(padding_bytes);
     }
+    
     img->pixel_array = buffer;
     img->padding = padding_bytes;
     return img;
@@ -68,7 +67,7 @@ BMPFile* BMPFile::newImage(int width, int height){
 
 void BMPFile::writeToFile(char* file_name){
     std::ofstream out;
-    out.open(file_name);
+    out.open(file_name, std::fstream::binary);
 
     out.write((char*)file_header, sizeof(BitmapFileHeader));
     out.write((char*)info_header, sizeof(DIBHeader));

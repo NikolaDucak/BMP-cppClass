@@ -41,7 +41,7 @@ class BMPFile{
     BitmapFileHeader* file_header;
     DIBHeader*        info_header;
     Pixel*            pixel_array;
-    int               padding;
+    uint32_t          padding;
 
 public:
 

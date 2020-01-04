@@ -1,13 +1,26 @@
 #include <iostream>
-#include "../inc/BMPFile.h"
+#include <fstream>
 
+#include <iostream>
 
-int main(int argc, char const *argv[])
-{
-    BMPFile* i = BMPFile::newImage(100,100); 
+#include "../inc/BMP.h"
 
-    i->pixel(2,2).g= 255;
+static const char ascii_color_intensity[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
-    i->writeToFile("test_output.bmp");
-    return 0;
+Pixel toGrayscale(Pixel& pix){ 
+	uint8_t luma = 0.299 * pix.r + 0.587 * pix.g + 0.114 * pix.b;	
+	return {luma,luma,luma};
+}
+
+int main(){
+	BMP bmp = BMP::read("img1.bmp");
+
+	for(int x = 10; x < bmp.getDIB().image_width; x++)
+		for(int y = 10; y < bmp.getDIB().image_height; y++){
+			bmp.at(x,y) = toGrayscale(bmp.at(x,y));
+		}
+
+	bmp.write( "result.bmp" );
+
+	return 0;
 }

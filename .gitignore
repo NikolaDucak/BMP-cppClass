@@ -1,0 +1,5 @@
+#ignore build and object file dirs
+obj/
+build/
+#vim swp
+*.swp
